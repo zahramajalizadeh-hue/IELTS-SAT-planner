@@ -1,112 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#131a28" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS + SAT — Daily Study Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-top:#131a28; --bg-bottom:#0d121d;
+    --panel:#1c2540; --panel-alt:#222c4d;
+    --amber:#e8a33d; --teal:#4fb6a6;
+    --text:#f4f1e6; --muted:#8a93ad; --rule:rgba(244,241,230,0.09);
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));color:var(--text);font-family:'Work Sans',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+  .wrap{max-width:880px;margin:0 auto;padding:52px 22px 100px;}
 
-  <title>IELTS + SAT Study Planner</title>
+  .eyebrow{font-family:'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:var(--muted);}
+  h1.title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(32px,5.6vw,54px);text-transform:uppercase;margin:10px 0 14px;line-height:1.04;}
+  .subtitle{color:var(--muted);font-size:15.5px;max-width:600px;margin:0 0 18px;}
+  .howto{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 18px;font-size:13.5px;color:var(--muted);margin-bottom:44px;}
+  .howto b{color:var(--text);}
 
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json" />
+  .section-head{margin:56px 0 18px;}
+  .section-head h2{font-family:'Big Shoulders Display',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(22px,3vw,28px);margin:6px 0 0;}
 
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  .legend{display:flex;gap:24px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);margin-bottom:18px;}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle;}
+  .dot.amber{background:var(--amber);} .dot.teal{background:var(--teal);}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  /* Day cards */
+  .day-card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+  .day-card-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--panel-alt);}
+  .day-name{font-family:'Big Shoulders Display',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:.02em;}
+  .progress-badge{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);background:rgba(244,241,230,0.06);border-radius:20px;padding:4px 12px;}
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css" />
+  .block{padding:16px 20px;border-top:1px solid var(--rule);}
+  .block-tag{font-family:'IBM Plex Mono',monospace;font-size:10.8px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;}
+  .block.amber .block-tag::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--amber);}
+  .block.teal .block-tag::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal);}
+
+  .steps{list-style:none;margin:0;padding:0;}
+  .steps li{margin-bottom:9px;}
+  .steps label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:14px;}
+  .steps input[type=checkbox]{margin-top:3px;width:16px;height:16px;flex-shrink:0;cursor:pointer;}
+  .block.amber input[type=checkbox]{accent-color:var(--amber);}
+  .block.teal input[type=checkbox]{accent-color:var(--teal);}
+  .steps input:checked + span{text-decoration:line-through;opacity:.5;}
+
+  /* Roadmap */
+  .phase{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:18px 22px;margin-bottom:14px;}
+  .phase-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .phase-top h3{font-family:'Big Shoulders Display',sans-serif;font-size:20px;text-transform:uppercase;margin:0;}
+  .phase-weeks{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);}
+  .phase ul{margin:8px 0 0;padding-left:18px;font-size:14px;}
+  .phase li{margin-bottom:6px;color:var(--text);}
+  .phase li b{color:var(--amber);}
+
+  /* Tips */
+  .tips-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .tip-card{background:var(--panel);border-radius:var(--radius);padding:15px 18px;border-left:3px solid var(--rule);}
+  .tip-card.amber{border-left-color:var(--amber);}
+  .tip-card.teal{border-left-color:var(--teal);}
+  .tip-card.callout{background:var(--panel-alt);border-left-color:var(--text);grid-column:1 / -1;}
+  .tip-tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+  .tip-card p{font-size:13.6px;margin:0;}
+
+  /* Resources */
+  .resources-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .resource-col{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;}
+  .resource-col h3{display:flex;align-items:center;font-family:'Big Shoulders Display',sans-serif;text-transform:uppercase;font-size:17px;margin:0 0 10px;}
+  .resource-col ul{margin:0;padding-left:18px;font-size:13.6px;}
+  .resource-col li{margin-bottom:9px;color:var(--muted);}
+  .resource-col li b{color:var(--text);}
+
+  footer{margin-top:56px;border-top:1px solid var(--rule);padding-top:20px;font-size:12.5px;color:var(--muted);}
+
+  @media (max-width:680px){
+    .tips-grid,.resources-grid{grid-template-columns:1fr;}
+    .tip-card.callout{grid-column:auto;}
+  }
+</style>
 </head>
-
 <body>
+<div class="wrap">
 
-  <!-- App Shell -->
-  <div class="app">
+  <span class="eyebrow">Your study plan</span>
+  <h1 class="title">What to do, every day</h1>
+  <p class="subtitle">3–6 months, about 1–2 hours a day. One deep-focus block, one short maintenance block, alternating IELTS and SAT so both get real time.</p>
+  <div class="howto">Work through each box in order and tick it off as you go. Your progress is saved in this browser, so closing the page won't reset it. <b>Start by taking one full SAT practice test in Bluebook and one full IELTS practice test</b> — everything below assumes you've done that baseline check.</div>
 
-    <!-- Header -->
-    <header class="topbar">
-      <div class="brand">
-        <span class="eyebrow">Study Planner</span>
-        <h1>IELTS + SAT</h1>
-      </div>
+  <div class="legend"><span class="dot amber"></span>IELTS&nbsp;&nbsp;&nbsp;<span class="dot teal"></span>SAT</div>
 
-      <nav class="nav">
-        <button class="nav-btn active" data-page="dashboard">Today</button>
-        <button class="nav-btn" data-page="stats">Stats</button>
-        <button class="nav-btn" data-page="scores">Scores</button>
-        <button class="nav-btn" data-page="errors">Errors</button>
-      </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main id="app-view">
-
-      <!-- DASHBOARD -->
-      <section class="page active" id="dashboard">
-
-        <div class="card hero">
-          <h2>Today’s Focus</h2>
-          <p class="muted">Your tasks are saved locally and work offline.</p>
-
-          <div class="streak">
-            🔥 Streak: <span id="streakCount">0</span> days
-          </div>
-
-          <div class="progress-ring">
-            <span id="todayProgress">0%</span>
-          </div>
-        </div>
-
-        <div id="todayTasks"></div>
-
-      </section>
-
-      <!-- STATS -->
-      <section class="page" id="stats">
-        <div class="card">
-          <h2>Weekly Progress</h2>
-          <div id="weeklyStats"></div>
-        </div>
-      </section>
-
-      <!-- SCORES -->
-      <section class="page" id="scores">
-        <div class="card">
-          <h2>Score Tracker</h2>
-
-          <h3>IELTS</h3>
-          <div id="ieltsScores"></div>
-
-          <h3>SAT</h3>
-          <div id="satScores"></div>
-        </div>
-      </section>
-
-      <!-- ERROR LOG -->
-      <section class="page" id="errors">
-        <div class="card">
-          <h2>Error Log</h2>
-          <div id="errorLog"></div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <span>Offline-ready • Auto-saved • GitHub Pages compatible</span>
-    </footer>
-
+  <!-- MONDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Monday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block amber"><div class="block-tag">IELTS · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="mon1"><span>Do one full Listening test (Cambridge IELTS book) under timed conditions — 30 min + 10 min transfer.</span></label></li>
+        <li><label><input type="checkbox" data-key="mon2"><span>Mark it straight away using the answer key.</span></label></li>
+        <li><label><input type="checkbox" data-key="mon3"><span>For every wrong answer, write one line in your error log: didn't hear it / misheard a word / misread the question.</span></label></li>
+        <li><label><input type="checkbox" data-key="mon4"><span>Replay the 1–2 minutes around each wrong answer — once without the script, once with it.</span></label></li>
+      </ul>
+    </div>
+    <div class="block teal"><div class="block-tag">SAT · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="mon5"><span>Review 15 words from your vocab-in-context list.</span></label></li>
+        <li><label><input type="checkbox" data-key="mon6"><span>Add 5 new flashcards for words you didn't know this week.</span></label></li>
+        <li><label><input type="checkbox" data-key="mon7"><span>Quiz yourself on yesterday's batch from memory.</span></label></li>
+      </ul>
+    </div>
   </div>
 
-  <!-- App Logic -->
-  <script src="app.js"></script>
+  <!-- TUESDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Tuesday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block teal"><div class="block-tag">SAT · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="tue1"><span>Open Khan Academy SAT Practice or the College Board Question Bank.</span></label></li>
+        <li><label><input type="checkbox" data-key="tue2"><span>Do 15–20 untimed questions on your weakest topic (start with whatever your diagnostic flagged).</span></label></li>
+        <li><label><input type="checkbox" data-key="tue3"><span>Check each answer right after solving it, not at the end.</span></label></li>
+        <li><label><input type="checkbox" data-key="tue4"><span>For every miss, log the reason: careless mistake / didn't know the rule / misread the question.</span></label></li>
+        <li><label><input type="checkbox" data-key="tue5"><span>Finish with 5 timed questions to build pace.</span></label></li>
+      </ul>
+    </div>
+    <div class="block amber"><div class="block-tag">IELTS · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="tue6"><span>Pull 5 new words or collocations from anything you read today.</span></label></li>
+        <li><label><input type="checkbox" data-key="tue7"><span>Write one original sentence using each word.</span></label></li>
+      </ul>
+    </div>
+  </div>
 
+  <!-- WEDNESDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Wednesday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block amber"><div class="block-tag">IELTS · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="wed1"><span>Pick a new prompt (alternate Task 1 and Task 2 week by week).</span></label></li>
+        <li><label><input type="checkbox" data-key="wed2"><span>Write it under timed conditions — 20 min for Task 1, 40 min for Task 2.</span></label></li>
+        <li><label><input type="checkbox" data-key="wed3"><span>Self-mark against the band descriptors: Task Achievement, Coherence, Lexical Resource, Grammar.</span></label></li>
+        <li><label><input type="checkbox" data-key="wed4"><span>Rewrite your weakest paragraph, untimed, fixing the one thing that cost you the most marks.</span></label></li>
+      </ul>
+    </div>
+    <div class="block teal"><div class="block-tag">SAT · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="wed5"><span>Do one timed Reading & Writing passage from the Question Bank.</span></label></li>
+        <li><label><input type="checkbox" data-key="wed6"><span>Check it immediately and note the exact question type you got wrong.</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THURSDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Thursday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block teal"><div class="block-tag">SAT · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="thu1"><span>Do one full Reading & Writing module (27 questions, ~32 min) from Bluebook or the Question Bank.</span></label></li>
+        <li><label><input type="checkbox" data-key="thu2"><span>Review every question — even ones you got right — and write one line on why the correct answer works.</span></label></li>
+        <li><label><input type="checkbox" data-key="thu3"><span>Log every miss by type: grammar rule, vocab-in-context, main idea, or evidence.</span></label></li>
+      </ul>
+    </div>
+    <div class="block amber"><div class="block-tag">IELTS · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="thu4"><span>Pick one Speaking Part 2 cue card topic.</span></label></li>
+        <li><label><input type="checkbox" data-key="thu5"><span>Record yourself speaking for 2 minutes with no preparation.</span></label></li>
+        <li><label><input type="checkbox" data-key="thu6"><span>Listen back once and note 2 specific things to fix.</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FRIDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Friday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block amber"><div class="block-tag">IELTS · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="fri1"><span>Do one full Reading passage (or a full test if you have time) under timed conditions.</span></label></li>
+        <li><label><input type="checkbox" data-key="fri2"><span>Mark it. For every wrong answer, go back and underline exactly where the answer was — most mistakes are about location, not understanding.</span></label></li>
+        <li><label><input type="checkbox" data-key="fri3"><span>Re-answer just the questions you missed, untimed, to confirm you now see why.</span></label></li>
+      </ul>
+    </div>
+    <div class="block teal"><div class="block-tag">SAT · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="fri4"><span>Pick one rule that keeps showing up in your error log (a grammar point or a math formula type).</span></label></li>
+        <li><label><input type="checkbox" data-key="fri5"><span>Drill 10 quick questions on just that rule.</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SATURDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Saturday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block amber"><div class="block-tag">IELTS · Deep focus · 45–60 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="sat1"><span>Record a full mock Speaking test: Part 1 (4–5 min), Part 2 (1 min prep + 2 min speaking), Part 3 (4–5 min).</span></label></li>
+        <li><label><input type="checkbox" data-key="sat2"><span>Listen back with the band descriptors next to you — fluency, vocabulary, grammar, pronunciation.</span></label></li>
+        <li><label><input type="checkbox" data-key="sat3"><span>Pick your single weakest area and redo just that part.</span></label></li>
+      </ul>
+    </div>
+    <div class="block teal"><div class="block-tag">SAT · Maintenance · 15–20 min</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="sat4"><span>Go through this week's SAT error log and tag each miss: careless / didn't know / misread.</span></label></li>
+        <li><label><input type="checkbox" data-key="sat5"><span>If 3+ mistakes share a tag, write it down as next week's priority.</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SUNDAY -->
+  <div class="day-card">
+    <div class="day-card-head"><span class="day-name">Sunday</span><span class="progress-badge" data-count>0/0</span></div>
+    <div class="block amber"><div class="block-tag">Review · full section, alternating weekly</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="sun1"><span>Odd weeks: do a full IELTS mock section under exact exam timing.</span></label></li>
+        <li><label><input type="checkbox" data-key="sun2"><span>Even weeks: do a full SAT module in Bluebook under exact exam timing.</span></label></li>
+        <li><label><input type="checkbox" data-key="sun3"><span>Score it properly with the official conversion table and compare to last week's score.</span></label></li>
+        <li><label><input type="checkbox" data-key="sun4"><span>Write one sentence on what moved, and why.</span></label></li>
+      </ul>
+    </div>
+    <div class="block teal"><div class="block-tag">Maintenance · light</div>
+      <ul class="steps">
+        <li><label><input type="checkbox" data-key="sun5"><span>Update both error logs and look for any pattern repeating across the week.</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head"><span class="eyebrow">Over the next 3–6 months</span><h2>The roadmap</h2></div>
+
+    <div class="phase">
+      <div class="phase-top"><h3>Foundation</h3><span class="phase-weeks">Weeks 1–4</span></div>
+      <ul>
+        <li><b>Week 1:</b> Full SAT practice test in Bluebook + a full IELTS practice test. Write down both baseline scores.</li>
+        <li><b>Weeks 2–4:</b> Follow the daily plan above exactly. Log every single mistake from day one — this is the data the next phase runs on.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-top"><h3>Targeted</h3><span class="phase-weeks">Weeks 5–12</span></div>
+      <ul>
+        <li><b>Every 2 weeks:</b> retake a short check — one SAT module + one IELTS skill test — to see what's actually moving.</li>
+        <li>Whichever skill is lagging gets an extra maintenance slot that week. <b>Swap a slot, don't add one</b> — keep the total time the same.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-top"><h3>Simulation</h3><span class="phase-weeks">Final 4–6 weeks</span></div>
+      <ul>
+        <li><b>Every week:</b> one full SAT test (all modules) in Bluebook + one full IELTS mock (all 4 skills), both timed exactly like exam day.</li>
+        <li>Review every miss. By now your error log should start predicting your mistakes before you make them.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="eyebrow">Quick wins</span><h2>Tips that actually move your score</h2></div>
+    <div class="tips-grid">
+      <div class="tip-card amber"><div class="tip-tag">IELTS · Listening</div><p>Skim the questions during the intro, before audio starts — predicting beats reacting.</p></div>
+      <div class="tip-card amber"><div class="tip-tag">IELTS · Reading</div><p>Find the exact sentence the answer comes from. Most mistakes are about location, not comprehension.</p></div>
+      <div class="tip-card amber"><div class="tip-tag">IELTS · Writing</div><p>At Band 7+, fully answering the question beats fancy vocabulary. Address every part of the prompt first.</p></div>
+      <div class="tip-card amber"><div class="tip-tag">IELTS · Speaking</div><p>Record every practice answer. What sounds fine in your head often sounds hesitant out loud.</p></div>
+      <div class="tip-card teal"><div class="tip-tag">SAT · Math</div><p>Build your formula sheet from your own error log, not a textbook — memorize only what you keep missing.</p></div>
+      <div class="tip-card teal"><div class="tip-tag">SAT · Reading & Writing</div><p>Eliminate two clearly wrong answers first, then decide between what's left.</p></div>
+      <div class="tip-card callout"><div class="tip-tag">Before you start</div><p>Take one full SAT practice test in Bluebook before Week 1 — it tells you whether Math or Reading/Writing needs more of your time, so you can shift the plan above accordingly.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="eyebrow">Where to practice</span><h2>Resources</h2></div>
+    <div class="resources-grid">
+      <div class="resource-col"><h3><span class="dot amber"></span>IELTS</h3>
+        <ul>
+          <li><b>Cambridge IELTS</b> books (latest volumes) — closest material to the real exam.</li>
+          <li><b>British Council — Road to IELTS</b> — lessons tied directly to band descriptors.</li>
+          <li><b>IELTS Liz / E2 IELTS</b> (YouTube) — band-specific feedback for Writing and Speaking.</li>
+        </ul>
+      </div>
+      <div class="resource-col"><h3><span class="dot teal"></span>SAT</h3>
+        <ul>
+          <li><b>Bluebook</b> (College Board) — the official app, use it for every full-length test.</li>
+          <li><b>Khan Academy SAT Prep</b> — personalizes practice from your Bluebook diagnostic.</li>
+          <li><b>College Board Question Bank</b> — official released questions, sorted by skill.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>Rebalance this plan once your SAT diagnostic and first IELTS mock scores land — the IELTS/SAT split here is a starting point, not a fixed rule.</footer>
+
+</div>
+<script>
+  function refreshCounts(){
+    document.querySelectorAll('.day-card').forEach(function(card){
+      var boxes = card.querySelectorAll('input[type=checkbox]');
+      var checked = card.querySelectorAll('input[type=checkbox]:checked').length;
+      var badge = card.querySelector('[data-count]');
+      if(badge) badge.textContent = checked + '/' + boxes.length;
+    });
+  }
+  document.querySelectorAll('input[type=checkbox]').forEach(function(cb){
+    try{
+      var saved = localStorage.getItem('ielts-sat-' + cb.dataset.key);
+      if(saved === '1') cb.checked = true;
+    }catch(e){}
+    cb.addEventListener('change', function(){
+      try{ localStorage.setItem('ielts-sat-' + cb.dataset.key, cb.checked ? '1' : '0'); }catch(e){}
+      refreshCounts();
+    });
+  });
+  refreshCounts();
+</script>
 </body>
 </html>
