@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#131a28" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <title>IELTS + SAT Study Planner</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- App Shell -->
+  <div class="app">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="eyebrow">Study Planner</span>
+        <h1>IELTS + SAT</h1>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-page="dashboard">Today</button>
+        <button class="nav-btn" data-page="stats">Stats</button>
+        <button class="nav-btn" data-page="scores">Scores</button>
+        <button class="nav-btn" data-page="errors">Errors</button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="app-view">
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="dashboard">
+
+        <div class="card hero">
+          <h2>Today’s Focus</h2>
+          <p class="muted">Your tasks are saved locally and work offline.</p>
+
+          <div class="streak">
+            🔥 Streak: <span id="streakCount">0</span> days
+          </div>
+
+          <div class="progress-ring">
+            <span id="todayProgress">0%</span>
+          </div>
+        </div>
+
+        <div id="todayTasks"></div>
+
+      </section>
+
+      <!-- STATS -->
+      <section class="page" id="stats">
+        <div class="card">
+          <h2>Weekly Progress</h2>
+          <div id="weeklyStats"></div>
+        </div>
+      </section>
+
+      <!-- SCORES -->
+      <section class="page" id="scores">
+        <div class="card">
+          <h2>Score Tracker</h2>
+
+          <h3>IELTS</h3>
+          <div id="ieltsScores"></div>
+
+          <h3>SAT</h3>
+          <div id="satScores"></div>
+        </div>
+      </section>
+
+      <!-- ERROR LOG -->
+      <section class="page" id="errors">
+        <div class="card">
+          <h2>Error Log</h2>
+          <div id="errorLog"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Offline-ready • Auto-saved • GitHub Pages compatible</span>
+    </footer>
+
+  </div>
+
+  <!-- App Logic -->
+  <script src="app.js"></script>
+
+</body>
+</html>
