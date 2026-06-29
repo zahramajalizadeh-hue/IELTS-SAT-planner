@@ -1,0 +1,232 @@
+:root{
+  --bg-top:#131a28;
+  --bg-bottom:#0d121d;
+
+  --panel: rgba(28, 37, 64, 0.72);
+  --panel-solid:#1c2540;
+  --panel-alt: rgba(34, 44, 77, 0.9);
+
+  --amber:#e8a33d;
+  --teal:#4fb6a6;
+
+  --text:#f4f1e6;
+  --muted:#8a93ad;
+
+  --rule:rgba(244,241,230,0.08);
+
+  --radius:14px;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+  --blur: 14px;
+}
+
+/* RESET */
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'Work Sans',sans-serif;
+  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* APP LAYOUT */
+.app{
+  max-width:1000px;
+  margin:0 auto;
+  padding:18px 18px 90px;
+}
+
+/* TOP BAR */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter: blur(var(--blur));
+  background:rgba(19,26,40,0.6);
+  border-bottom:1px solid var(--rule);
+  padding:14px 14px 10px;
+  border-radius:0 0 var(--radius) var(--radius);
+}
+
+.brand h1{
+  font-family:'Big Shoulders Display',sans-serif;
+  margin:4px 0 0;
+  font-size:26px;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+
+/* NAV */
+.nav{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.nav-btn{
+  border:1px solid var(--rule);
+  background:rgba(255,255,255,0.03);
+  color:var(--muted);
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+
+.nav-btn:hover{
+  transform:translateY(-1px);
+  color:var(--text);
+}
+
+.nav-btn.active{
+  background:linear-gradient(135deg,var(--amber),#c87f1f);
+  color:#0d121d;
+  font-weight:600;
+  border:none;
+}
+
+/* PAGES */
+.page{
+  display:none;
+  animation:fadeIn .35s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* CARDS */
+.card{
+  background:var(--panel);
+  border:1px solid var(--rule);
+  border-radius:var(--radius);
+  padding:16px;
+  margin:14px 0;
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(var(--blur));
+}
+
+.card h2{
+  font-family:'Big Shoulders Display',sans-serif;
+  text-transform:uppercase;
+  margin:0 0 10px;
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,rgba(28,37,64,0.85),rgba(34,44,77,0.6));
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* STREAK */
+.streak{
+  margin-top:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  color:var(--text);
+}
+
+/* PROGRESS */
+.progress-ring{
+  margin-top:12px;
+  font-size:22px;
+  font-weight:600;
+  color:var(--amber);
+}
+
+/* TASKS */
+.task-group{
+  margin-top:12px;
+  border-top:1px solid var(--rule);
+  padding-top:12px;
+}
+
+.task-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.task{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:8px 0;
+  font-size:14px;
+  cursor:pointer;
+  transition:opacity .2s ease;
+}
+
+.task input{
+  width:16px;
+  height:16px;
+  margin-top:2px;
+  accent-color:var(--amber);
+}
+
+.task.done span{
+  text-decoration:line-through;
+  opacity:0.45;
+}
+
+/* IELTS / SAT colors */
+.task.sat input{
+  accent-color:var(--teal);
+}
+
+/* FOOTER */
+.footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  padding:10px;
+  background:rgba(13,18,29,0.7);
+  backdrop-filter: blur(var(--blur));
+  border-top:1px solid var(--rule);
+}
+
+/* RESPONSIVE iPAD OPTIMIZATION */
+@media (min-width:768px){
+  .app{
+    padding:28px;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .nav{
+    justify-content:flex-start;
+  }
+}
